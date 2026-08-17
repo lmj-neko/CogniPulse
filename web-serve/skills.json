@@ -1,0 +1,63 @@
+{
+  "get_current_time": {
+    "description": "获取当前日期时间",
+    "usage": "传入时区（可选，默认 Asia/Shanghai），如 {\"timezone\": \"America/New_York\"}",
+    "script": "skill_TIME.py"
+  },
+  "calculate": {
+    "description": "计算数学表达式",
+    "usage": "传入表达式，如 {\"expr\": \"(3+5)*2\"}",
+    "script": "skill_CALC.py"
+  },
+  "get_ip_info": {
+    "description": "查询本机公网 IP 或指定 IP 的地理信息",
+    "usage": "可传入 {\"ip\": \"8.8.8.8\"}，不传则查本机",
+    "script": "skill_IP.py"
+  },
+  "get_weather": {
+    "description": "查询城市天气",
+    "usage": "传入城市名称，如 {\"city\": \"北京\"}",
+    "script": "skill_WEATHER.py"
+  },
+  "CMD": {
+    "description": "执行任意系统命令（高风险）",
+    "usage": "传入 {\"command\": \"ls -la\"}",
+    "script": "skill_CMD.py",
+    "timeout": 0
+  },
+  "FILE_READ": {
+    "description": "读取文件内容（文本）",
+    "usage": "传入 {\"path\": \"/path/to/file\"}",
+    "script": "skill_FILE_READ.py"
+  },
+  "FILE_WRITE": {
+    "description": "写入文件（覆盖原有内容）",
+    "usage": "传入 {\"path\": \"/path/to/file\", \"content\": \"文本内容\"}",
+    "script": "skill_FILE_WRITE.py"
+  },
+  "FILE_APPEND": {
+    "description": "追加内容到文件末尾",
+    "usage": "传入 {\"path\": \"/path/to/file\", \"content\": \"追加内容\"}",
+    "script": "skill_FILE_APPEND.py"
+  },
+  "FILE_CREATE": {
+    "description": "创建空文件（若父目录不存在则报错）",
+    "usage": "传入 {\"path\": \"/path/to/newfile\"}",
+    "script": "skill_FILE_CREATE.py"
+  },
+  "FILE_DELETE": {
+    "description": "删除文件（不支持目录）",
+    "usage": "传入 {\"path\": \"/path/to/file\"}",
+    "script": "skill_FILE_DELETE.py"
+  },
+  "BROWSE_SEARCH": {
+    "description": "搜索网页，返回标题列表（含编号、URL、摘要）",
+    "usage": "传入 {\"query\": \"搜索关键词\"}",
+    "script": "skill_BROWSE_SEARCH.py"
+  },
+  "BROWSE_READ": {
+    "description": "根据 URL 获取网页纯文本内容",
+    "usage": "传入 {\"url\": \"http://...\"}",
+    "script": "skill_BROWSE_READ.py"
+  }
+}

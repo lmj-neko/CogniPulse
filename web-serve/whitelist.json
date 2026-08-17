@@ -1,0 +1,8 @@
+[
+  "get_current_time",
+  "get_local_ip",
+  "get_ip_info",
+  "BROWSE_SEARCH",
+  "BROWSE_READ",
+  "get_weather"
+]

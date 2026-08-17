@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>关于 CogniPulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== CSS 变量（与主界面一致） ===== */
+        :root {
+            --bg-base: #f9fafb;
+            --bg-card: #ffffff;
+            --bg-sidebar: #f1f3f5;
+            --bg-hover: #e9ecf2;
+            --bg-active: #e4edfd;
+            --text-primary: #0f1115;
+            --text-secondary: #61666b;
+            --text-tertiary: #81858c;
+            --text-caption: #adb2b8;
+            --border-color: #e1e5ee;
+            --border-light: #e9ecf2;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --shadow-lg: 0 12px 32px rgba(0,0,0,0.08);
+            --brand-primary: #3964fe;
+            --brand-hover: #5686fe;
+            --brand-light: #edf3fe;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+            --transition: 0.2s ease;
+        }
+        body.dark {
+            --bg-base: #151517;
+            --bg-card: #1b1b1c;
+            --bg-sidebar: #1b1b1c;
+            --bg-hover: #2c2c2e;
+            --bg-active: #2f4c8f;
+            --text-primary: #f5f5f7;
+            --text-secondary: #adb2b8;
+            --text-tertiary: #81858c;
+            --text-caption: #61666b;
+            --border-color: #2c2c2e;
+            --border-light: #232324;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+            --shadow-lg: 0 12px 32px rgba(0,0,0,0.5);
+            --brand-primary: #5686fe;
+            --brand-hover: #3964fe;
+            --brand-light: #283142;
+        }
+
+        /* ===== 全局重置 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 24px;
+            transition: background var(--transition), color var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        button {
+            font: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: inherit;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-caption);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-tertiary);
+        }
+
+        /* ===== 主体容器 ===== */
+        .container {
+            max-width: 820px;
+            width: 100%;
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            padding: 48px 44px 40px;
+            position: relative;
+            transition: background var(--transition), border var(--transition), box-shadow var(--transition);
+        }
+        @media (max-width: 520px) {
+            .container {
+                padding: 28px 20px 24px;
+            }
+            body {
+                padding: 12px;
+            }
+        }
+
+        /* ===== 主题切换按钮 ===== */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            padding: 8px 14px;
+            font-size: 18px;
+            color: var(--text-secondary);
+            transition: background var(--transition), border var(--transition);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .theme-toggle:hover {
+            background: var(--bg-hover);
+        }
+        .theme-toggle span {
+            font-size: 13px;
+            font-weight: 500;
+        }
+        @media (max-width: 520px) {
+            .theme-toggle {
+                top: 14px;
+                right: 14px;
+                padding: 6px 10px;
+                font-size: 16px;
+            }
+            .theme-toggle span {
+                display: none;
+            }
+        }
+
+        /* ===== 头部 ===== */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+        .header .icon {
+            width: 52px;
+            height: 52px;
+            background: var(--brand-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .header .title-group h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+        .header .title-group .subtitle {
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+        .version-badge {
+            display: inline-block;
+            background: var(--brand-light);
+            color: var(--brand-primary);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        @media (max-width: 520px) {
+            .header .icon {
+                width: 42px;
+                height: 42px;
+                font-size: 22px;
+            }
+            .header .title-group h1 {
+                font-size: 24px;
+            }
+            .version-badge {
+                font-size: 10px;
+                padding: 1px 8px;
+                margin-left: 4px;
+            }
+        }
+
+        /* ===== 状态栏 ===== */
+        .status-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            margin: 16px 0 24px;
+            padding: 12px 16px;
+            background: var(--bg-sidebar);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+        }
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .status-item .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .status-item .dot.green { background: #22c55e; }
+        .status-item .dot.blue { background: var(--brand-primary); }
+        .status-item .dot.yellow { background: #eab308; }
+        .status-item strong { color: var(--text-primary); font-weight: 600; }
+
+        /* ===== 开发者区域（带头像+图片） ===== */
+        .developer-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .developer-profile {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .developer-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--brand-primary);
+            flex-shrink: 0;
+            background: var(--bg-sidebar);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: var(--text-tertiary);
+        }
+        .developer-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .developer-info {
+            flex: 1;
+        }
+        .developer-info .name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .developer-info .bio {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 2px;
+            line-height: 1.6;
+        }
+        .developer-info .links {
+            display: flex;
+            gap: 12px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .developer-info .links a {
+            color: var(--brand-primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: opacity var(--transition);
+        }
+        .developer-info .links a:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+
+        /* 简介图片展示 */
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 4px;
+        }
+        .showcase-item {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            background: var(--bg-sidebar);
+            transition: border var(--transition), box-shadow var(--transition);
+        }
+        .showcase-item:hover {
+            border-color: var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+        .showcase-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            aspect-ratio: 9 / 10;
+            object-fit: cover;
+            background: var(--bg-sidebar);
+        }
+        .showcase-item .caption {
+            padding: 8px 12px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            text-align: center;
+            border-top: 1px solid var(--border-light);
+        }
+        @media (max-width: 480px) {
+            .showcase-grid {
+                grid-template-columns: 1fr;
+            }
+            .developer-profile {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* ===== 区域通用 ===== */
+        .section {
+            margin-bottom: 28px;
+        }
+        .section:last-of-type {
+            margin-bottom: 0;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title .emoji {
+            font-size: 18px;
+        }
+        .section p,
+        .section li {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 14.5px;
+        }
+        .section ul {
+            padding-left: 20px;
+        }
+        .section li {
+            margin-bottom: 4px;
+        }
+
+        /* ===== 技能网格 ===== */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .skill-tag {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            padding: 6px 12px;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-align: center;
+            transition: background var(--transition), border var(--transition);
+        }
+        .skill-tag .highlight {
+            color: var(--brand-primary);
+            font-weight: 600;
+        }
+        .skill-tag:hover {
+            background: var(--bg-hover);
+            border-color: var(--border-color);
+        }
+
+        /* ===== 技术栈 ===== */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .tech-item {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: background var(--transition);
+        }
+        .tech-item:hover {
+            background: var(--bg-hover);
+        }
+        .tech-item .label {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* ===== 链接 ===== */
+        .link {
+            color: var(--brand-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity var(--transition);
+        }
+        .link:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+
+        /* ===== 底部 ===== */
+        .footer {
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .footer .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--brand-primary);
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 14px;
+            transition: opacity var(--transition);
+        }
+        .footer .back-link:hover {
+            opacity: 0.7;
+        }
+        .footer .copyright {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+        @media (max-width: 520px) {
+            .footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+
+        /* ===== 徽章行 ===== */
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
+        }
+        .badge-row .badge {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            padding: 2px 12px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+        .badge-row .badge.primary {
+            background: var(--brand-light);
+            color: var(--brand-primary);
+            border-color: var(--brand-light);
+        }
+
+        @media (max-width: 480px) {
+            .skills-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 主题切换 -->
+        <button class="theme-toggle" id="themeToggle" title="切换主题">
+            🌓 <span>主题</span>
+        </button>
+
+        <!-- ===== 头部 ===== -->
+        <div class="header">
+            <div class="icon">CP</div>
+            <div class="title-group">
+                <h1>
+                    CogniPulse
+                    <span class="version-badge">v1.2.0</span>
+                </h1>
+                <div class="subtitle">智能任务助手 · 本地部署 · 技能可扩展</div>
+            </div>
+        </div>
+
+        <!-- ===== 状态栏 ===== -->
+        <div class="status-bar">
+            <span class="status-item">
+                <span class="dot green"></span> 运行中
+            </span>
+            <span class="status-item">
+                <span class="dot blue"></span> <strong>2</strong> 个模型
+            </span>
+            <span class="status-item">
+                <span class="dot yellow"></span> <strong id="skillCount">12</strong> 个技能
+            </span>
+            <span class="status-item">
+                上下文 <strong>2048</strong> tokens
+            </span>
+        </div>
+
+        <!-- ===== 开发者介绍（头像+图片） ===== -->
+        <div class="developer-section">
+            <div class="developer-profile">
+                <div class="developer-avatar">
+                    <!-- 请将头像图片放在 web-serve/static/img/avatar.png -->
+                    <img src="/static/img/avatar.png" alt="开发者头像" onerror="this.style.display='none'; this.parentElement.textContent='L';" />
+                </div>
+                <div class="developer-info">
+                    <div class="name">lmj <span style="font-weight:400; font-size:14px; color:var(--text-tertiary);">· 独立开发者</span></div>
+                    <div class="bio">
+                        🏢 JY Information Technology Joint Studio<br />
+                        📧 lmj@jyit.is-a.dev
+                    </div>
+                    <div class="links">
+                        <a href="https://github.com/lmj-neko" target="_blank">🌐 GitHub</a>
+                        <a href="https://lmj-profile.pages.dev" target="_blank">🌐 个人profile站</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 两张简介图片 -->
+            <div class="showcase-grid">
+                <div class="showcase-item">
+                    <img src="/static/img/1.png" alt="me!" onerror="this.style.display='none'; this.parentElement.textContent='L';" />
+                </div>
+                <div class="showcase-item">
+                    <!-- 请将界面截图放在 web-serve/static/img/screenshot.png -->
+                    <img src="/static/img/2.png" alt="界面截图" onerror="this.style.display='none'; this.parentElement.textContent='L';" />
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 主要特性（文案优化） ===== -->
+        <div class="section">
+            <div class="section-title">
+                <span class="emoji">✨</span> 主要特性
+            </div>
+            <ul>
+                <li>
+                    <strong>双模型分流：正经调皮两不误</strong><br />
+                    闲聊（CogniPulse_Chat）与工作（CogniPluse_Work）自动分流——日常唠嗑与严肃任务互不干扰，该卖萌时卖萌，该干活时绝不含糊。
+                </li>
+                <li>
+                    <strong>可扩展技能库：十八般武艺样样精通</strong><br />
+                    内置 CMD 命令执行、文件读写/追加/创建/删除、网页搜索与内容提取。还能自定义技能，想加什么加什么。
+                </li>
+                <li>
+                    <strong>安全授权：安全底线守得住</strong><br />
+                    敏感操作需用户二次确认，支持白名单与临时授权。你的电脑你做主，绝不偷偷摸摸搞事情。
+                </li>
+                <li>
+                    <strong>流式实时反馈：过程透明，拒绝盲盒</strong><br />
+                    逐字输出 + 思考过程折叠展示 + 每步耗时统计。看着 AI 一步步推理，比看侦探小说还过瘾。
+                </li>
+                <li>
+                    <strong>对话管理：历史、编辑、删除，随心掌控</strong><br />
+                    支持历史记录保存、编辑已发送消息（自动删除后续）、删除单条问答或整个对话。对话体验自由流畅，随时修正方向。
+                </li>
+                <li>
+                    <strong>深色/浅色主题：白天黑夜都护眼</strong><br />
+                    跟随系统偏好或手动切换，晚上聊天不刺眼，白天阅读更清晰。
+                </li>
+            </ul>
+        </div>
+
+        <!-- ===== 技术栈 ===== -->
+        <div class="section">
+            <div class="section-title">
+                <span class="emoji">⚙️</span> 技术栈
+            </div>
+            <div class="tech-stack">
+                <span class="tech-item"><span class="label">LLM</span> llama.cpp</span>
+                <span class="tech-item"><span class="label">模型</span> CogniPulse / Qwen3-4B</span>
+                <span class="tech-item"><span class="label">后端</span> Flask</span>
+                <span class="tech-item"><span class="label">前端</span> 原生 JS + Marked</span>
+                <span class="tech-item"><span class="label">搜索</span> DuckDuckGo / Bing</span>
+                <span class="tech-item"><span class="label">解析</span> BeautifulSoup</span>
+            </div>
+            <div style="margin-top:8px; font-size:13px; color:var(--text-tertiary);">
+                依赖：Flask · requests · beautifulsoup4 · transformers · pytz
+            </div>
+        </div>
+
+        <!-- ===== 技能列表（动态） ===== -->
+        <div class="section">
+            <div class="section-title">
+                <span class="emoji">🔧</span> 可用技能
+                <span style="font-size:13px; font-weight:400; color:var(--text-tertiary); margin-left:4px;" id="skillCountLabel"></span>
+            </div>
+            <div class="skills-grid" id="skillsGrid">
+                <!-- 由 JavaScript 动态生成 -->
+            </div>
+            <p style="margin-top:10px; font-size:13px; color:var(--text-tertiary);">
+                💡 技能调用需用户授权（白名单或临时允许），确保安全。
+            </p>
+        </div>
+
+        <!-- ===== 开源许可 ===== -->
+        <div class="section">
+            <div class="section-title">
+                <span class="emoji">📄</span> 开源许可
+            </div>
+            <p>
+                本工具仅供 <strong>个人学习与研究</strong> 使用，严禁用于非法用途。
+                技能执行（特别是 CMD）存在安全风险，请谨慎授权。
+                <br />
+                基于 <a href="https://github.com/ggerganov/llama.cpp" target="_blank" class="link">llama.cpp</a> ·
+                <a href="https://flask.palletsprojects.com/" target="_blank" class="link">Flask</a> ·
+                <a href="https://github.com/QwenLM/Qwen" target="_blank" class="link">Qwen</a>
+            </p>
+        </div>
+
+        <!-- ===== 页脚 ===== -->
+        <div class="footer">
+            <a href="/" class="back-link">← 返回对话</a>
+            <span class="copyright">2026 CogniPulse · I love you</span>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ===== 主题切换 =====
+            const btn = document.getElementById('themeToggle');
+            const applyTheme = (dark) => {
+                document.body.classList.toggle('dark', dark);
+                localStorage.setItem('theme', dark ? 'dark' : 'light');
+            };
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') applyTheme(true);
+            else if (saved === 'light') applyTheme(false);
+            else if (window.matchMedia('(prefers-color-scheme: dark)').matches) applyTheme(true);
+
+            btn.addEventListener('click', () => {
+                applyTheme(!document.body.classList.contains('dark'));
+            });
+
+            // ===== 加载技能列表（从 /skills.json 获取） =====
+            const skillsGrid = document.getElementById('skillsGrid');
+            const skillCountLabel = document.getElementById('skillCountLabel');
+            const skillCountBadge = document.getElementById('skillCount');
+
+            fetch('/skills.json')
+                .then(res => res.json())
+                .then(skills => {
+                    const keys = Object.keys(skills);
+                    if (skillCountBadge) skillCountBadge.textContent = keys.length;
+                    if (skillCountLabel) skillCountLabel.textContent = `(${keys.length} 个)`;
+
+                    skillsGrid.innerHTML = '';
+                    keys.forEach(key => {
+                        const info = skills[key];
+                        const tag = document.createElement('div');
+                        tag.className = 'skill-tag';
+                        const isHighRisk = key === 'CMD';
+                        tag.innerHTML = isHighRisk ?
+                            `<span class="highlight">${key}</span>` :
+                            key;
+                        tag.title = info.description || key;
+                        skillsGrid.appendChild(tag);
+                    });
+                })
+                .catch(() => {
+                    if (skillCountBadge) skillCountBadge.textContent = '?';
+                    if (skillCountLabel) skillCountLabel.textContent = '(加载中…)';
+                    skillsGrid.innerHTML = `
+                        <div class="skill-tag">加载中...</div>
+                        <div class="skill-tag">请确保 skills.json 存在</div>
+                    `;
+                });
+        })();
+    </script>
+</body>
+</html>
